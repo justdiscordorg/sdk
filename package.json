@@ -1,7 +1,7 @@
 {
   "name": "@justdiscord/sdk",
-  "version": "1.0.0",
-  "description": "Official JustDiscord API client — check votes, post server counts and commands, and verify vote webhooks.",
+  "version": "1.0.1",
+  "description": "Official JustDiscord API client \u2014 check votes, post server counts and commands, and verify vote webhooks.",
   "keywords": [
     "justdiscord",
     "discord",
@@ -13,10 +13,10 @@
     "api"
   ],
   "homepage": "https://justdiscord.org/docs",
-  "bugs": "https://github.com/umutxyp/justdiscord-sdk/issues",
+  "bugs": "https://github.com/justdiscordorg/sdk/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/umutxyp/justdiscord-sdk.git"
+    "url": "git+https://github.com/justdiscordorg/sdk.git"
   },
   "license": "MIT",
   "author": "JustDiscord (https://justdiscord.org)",
