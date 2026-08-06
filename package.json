@@ -1,0 +1,57 @@
+{
+  "name": "@justdiscord/sdk",
+  "version": "1.0.0",
+  "description": "Official JustDiscord API client — check votes, post server counts and commands, and verify vote webhooks.",
+  "keywords": [
+    "justdiscord",
+    "discord",
+    "discord-bot",
+    "bot-list",
+    "server-list",
+    "votes",
+    "webhook",
+    "api"
+  ],
+  "homepage": "https://justdiscord.org/docs",
+  "bugs": "https://github.com/umutxyp/justdiscord-sdk/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/umutxyp/justdiscord-sdk.git"
+  },
+  "license": "MIT",
+  "author": "JustDiscord (https://justdiscord.org)",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --target node18",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2",
+    "vitest": "^4.1.10"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
