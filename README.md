@@ -1,5 +1,10 @@
 # @justdiscord/sdk
 
+[![npm](https://img.shields.io/npm/v/@justdiscord/sdk?color=4f46e5&label=npm)](https://www.npmjs.com/package/@justdiscord/sdk)
+[![downloads](https://img.shields.io/npm/dm/@justdiscord/sdk?color=4f46e5)](https://www.npmjs.com/package/@justdiscord/sdk)
+[![docs](https://img.shields.io/badge/docs-justdiscord.org-4f46e5)](https://justdiscord.org/docs)
+[![licence](https://img.shields.io/npm/l/@justdiscord/sdk?color=4f46e5)](./LICENSE)
+
 The official client for the [JustDiscord](https://justdiscord.org) API.
 
 Check whether somebody voted, post your bot's server count and its command
