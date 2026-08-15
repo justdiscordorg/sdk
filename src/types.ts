@@ -31,7 +31,6 @@ export interface BotStats {
 
 export interface ServerStats {
   memberCount: number | null;
-  onlineCount: number | null;
   checkedAt: Date | null;
 }
 

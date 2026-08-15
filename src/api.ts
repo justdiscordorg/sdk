@@ -181,17 +181,20 @@ export class Api {
     };
   }
 
-  /** Member and online counts, as our bot last read them inside the
-      server. There is nothing to post: a guild cannot claim its own. */
+  /** The member count, as our bot last read it inside the server. There
+      is nothing to post: a guild cannot claim its own.
+
+      There is no online count. That figure needs Discord's presence
+      intent, which is privileged, and the API stopped returning it —
+      `onlineCount` was removed here in 1.0.2 rather than left as a
+      field that is always null. */
   async getServerStats(serverId = this.#serverId): Promise<ServerStats> {
     const data = await this.#request<{
       member_count: number | null;
-      online_count: number | null;
       checked_at: string | null;
     }>("GET", `/v0/servers/${this.#need(serverId, "serverId")}/stats`);
     return {
       memberCount: data.member_count,
-      onlineCount: data.online_count,
       checkedAt: data.checked_at ? new Date(data.checked_at) : null,
     };
   }

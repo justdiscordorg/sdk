@@ -59,7 +59,7 @@ const jd = new Api(process.env.JUSTDISCORD_TOKEN, { serverId: guild.id });
 
 if (await jd.hasVotedServer(member.id)) await member.roles.add(supporterRole);
 
-const { memberCount, onlineCount } = await jd.getServerStats();
+const { memberCount } = await jd.getServerStats();
 ```
 
 ## Webhooks
@@ -141,7 +141,7 @@ jd.getCommands()                   → Command[]
 
 jd.hasVotedServer(userId)          → boolean
 jd.getServerVotes({ cursor? })     → { votes, cursor }
-jd.getServerStats()                → { memberCount, onlineCount, checkedAt }
+jd.getServerStats()                → { memberCount, checkedAt }
 
 new Webhook(secret)
 hook.verify({ body, headers })     → boolean
