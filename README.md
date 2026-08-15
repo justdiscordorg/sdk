@@ -152,6 +152,19 @@ hook.listener(handler)             → express handler
 Full documentation, including the raw HTTP if you would rather not use a
 library at all: **https://justdiscord.org/docs**
 
+## Upgrading from 1.x
+
+`getServerStats()` no longer returns `onlineCount`. Counting who is online
+needs Discord's presence intent, which is privileged, and the API stopped
+returning the figure — so the field is gone rather than permanently `null`.
+
+```diff
+- const { memberCount, onlineCount } = await jd.getServerStats();
++ const { memberCount } = await jd.getServerStats();
+```
+
+Nothing else changed.
+
 ## Licence
 
 MIT
