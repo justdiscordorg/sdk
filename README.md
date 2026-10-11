@@ -8,7 +8,8 @@
 The official client for the [JustDiscord](https://justdiscord.org) API.
 
 Check whether somebody voted, post your bot's server count and its command
-list, and verify the webhook we send when a vote happens.
+list, publish announcements, read the public catalogue, and verify the webhook
+we send when a vote happens.
 
 TypeScript, no dependencies, ESM and CommonJS, Node 18+.
 
@@ -60,6 +61,44 @@ const jd = new Api(process.env.JUSTDISCORD_TOKEN, { serverId: guild.id });
 if (await jd.hasVotedServer(member.id)) await member.roles.add(supporterRole);
 
 const { memberCount } = await jd.getServerStats();
+```
+
+### Announcements
+
+A release, an event or a new feature, with its own page on your listing and a
+place on [the news page](https://justdiscord.org/news). Every one is read by a
+moderator before it is public.
+
+```js
+import { readFile } from "node:fs/promises";
+
+const { code } = await jd.createAnnouncement({
+  title: "Beatra 4.0 — a rebuilt player",
+  summary: "Gapless playback, a new queue, and lyrics that keep up with the song.",
+  body: "## What changed\n\nThe player was rewritten…", // Markdown, 200+ characters
+  category: "feature", // "announcement", "event" or "feature" — required
+  cover: await readFile("release-cover.png"), // PNG, JPEG, WebP or GIF, under 2 MB
+});
+
+// An edit sends only what changes; the rest is kept. It waits for review
+// while the published version stays up.
+await jd.updateAnnouncement(code, { title: "Beatra 4.0.1 — a rebuilt player" });
+
+const { announcements } = await jd.getAnnouncements();
+console.log(announcements[0].state); // "pending", "published", "edit_pending", …
+```
+
+On a client built with a `serverId`, the same calls post under the server.
+
+### The public catalogue
+
+No token needed:
+
+```js
+const jd = new Api();
+
+const { items } = await jd.getListings({ kind: "bot", tag: "music", sort: "votes", limit: 10 });
+const beatra = await jd.getListing("bot", "beatra"); // with its description and reviews
 ```
 
 ## Webhooks
@@ -123,6 +162,8 @@ try {
 | `not_found` | No published listing with that id |
 | `invalid` | The body or a parameter is wrong |
 | `rate_limited` | Over the limit — `retryAfter` says how long |
+| `server_error` | Something broke on our side |
+| `network` | We could not be reached (status `0`) |
 
 A `429` is waited out and retried automatically, twice by default, using the
 `Retry-After` the server sends. Set `retries: 0` to handle it yourself.
@@ -130,18 +171,26 @@ A `429` is waited out and retried automatically, twice by default, using the
 ## Reference
 
 ```ts
-new Api(token, { botId?, serverId?, baseUrl?, timeout?, retries? })
+new Api(token?, { botId?, serverId?, baseUrl?, timeout?, retries? })
 
-jd.hasVoted(userId)                → boolean
-jd.getVotes({ cursor?, limit? })   → { votes, cursor }
+jd.hasVoted(userId, botId?)        → boolean
+jd.getVotes({ cursor?, limit?, botId? }) → { votes, cursor }
 jd.getStats()                      → { serverCount, shardCount, reportedAt }
 jd.postStats({ serverCount, shardCount? })
 jd.postCommands(commands)          → number
 jd.getCommands()                   → Command[]
 
-jd.hasVotedServer(userId)          → boolean
-jd.getServerVotes({ cursor? })     → { votes, cursor }
+jd.hasVotedServer(userId, serverId?) → boolean
+jd.getServerVotes({ cursor?, limit?, serverId? }) → { votes, cursor }
 jd.getServerStats()                → { memberCount, checkedAt }
+
+jd.getAnnouncements(type?)         → { announcements, count, limits }
+jd.getAnnouncement(code, type?)    → Announcement
+jd.createAnnouncement(input, type?) → { code, state, message }
+jd.updateAnnouncement(code, edit, type?) → { code, state, message }
+
+jd.getListings({ kind?, q?, tag?, sort?, verified?, limit? }) → { items, count, limit }
+jd.getListing(kind, slug)          → ListingDetail
 
 new Webhook(secret)
 hook.verify({ body, headers })     → boolean
@@ -151,6 +200,14 @@ hook.listener(handler)             → express handler
 
 Full documentation, including the raw HTTP if you would rather not use a
 library at all: **https://justdiscord.org/docs**
+
+## 2.1
+
+Adds announcements — `getAnnouncements`, `getAnnouncement`,
+`createAnnouncement`, `updateAnnouncement`, with the required `category` — and
+the public catalogue, `getListings` and `getListing`. `new Api()` may now be
+built without a token for the catalogue; anything about your own listing still
+needs one and says so. Nothing that worked in 2.0 changed.
 
 ## Upgrading from 1.x
 

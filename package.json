@@ -1,7 +1,7 @@
 {
   "name": "@justdiscord/sdk",
-  "version": "2.0.0",
-  "description": "Official JustDiscord API client — check votes, post server counts and commands, and verify vote webhooks.",
+  "version": "2.1.0",
+  "description": "Official JustDiscord API client — check votes, post server counts and commands, publish announcements, read the catalogue, and verify vote webhooks.",
   "keywords": [
     "justdiscord",
     "discord",

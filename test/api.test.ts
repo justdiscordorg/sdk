@@ -98,8 +98,10 @@ describe("Api", () => {
     vi.useRealTimers();
   });
 
-  it("refuses to be built without a token, or called without an id", async () => {
-    expect(() => new Api("")).toThrow(TypeError);
+  it("refuses a listing's own calls without a token, or without an id", async () => {
+    /* Built without one is allowed since 2.1 — the public catalogue
+       needs none — but nothing about a listing can be asked. */
+    await expect(new Api("", { botId: "7740" }).hasVoted("5183")).rejects.toThrow(TypeError);
     await expect(new Api("jd_test").hasVoted("5183")).rejects.toThrow(/botId is required/);
   });
 });
